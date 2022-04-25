@@ -19,6 +19,18 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
+    // প্রথমেই উপরের ক্লায়েন্টকে কানেক্ট করতে হয়।
+    await client.connect();
+    // make a collection it could be products, users etc but in this case we named it productCollection
+    const productCollection = client.db('emaJohn').collection('product');
+
+    // now if you to load data then you must make a api which method will be get
+    app.get('/product', async (req, res) => {
+      const query = {};
+      const cursor = productCollection.find(query);
+      const products = await cursor.toArray();
+      res.send(products);
+    });
   } finally {
   }
 }
